@@ -116,7 +116,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "core_main_app.utils.custom_context_processors.domain_context_processor",  # Needed by any curator app
+                # Needed by any curator app
+                "core_main_app.utils.custom_context_processors.domain_context_processor",
                 "django.template.context_processors.i18n",
             ],
         },
@@ -238,26 +239,31 @@ update_logger_with_local_app(LOGGING, local_logger_conf, INSTALLED_APPS)
 if LOGGING_CLIENT:
     set_generic_handler(LOGGING, 'logfile-template', LOGGER_CLIENT_LEVEL, LOGGER_FILE_CLIENT, LOGGER_MAX_BYTES,
                         LOGGER_BACKUP_COUNT, 'logging.handlers.RotatingFileHandler')
-    set_generic_logger(LOGGING, 'django.template', LOGGER_CLIENT_LEVEL, ['console', 'logfile-template'])
+    set_generic_logger(LOGGING, 'django.template', LOGGER_CLIENT_LEVEL, [
+                       'console', 'logfile-template'])
     set_generic_handler(LOGGING, 'logfile-request', LOGGER_CLIENT_LEVEL, LOGGER_FILE_CLIENT, LOGGER_MAX_BYTES,
                         LOGGER_BACKUP_COUNT, 'logging.handlers.RotatingFileHandler')
-    set_generic_logger(LOGGING, 'django.request', LOGGER_CLIENT_LEVEL, ['console', 'logfile-request'])
+    set_generic_logger(LOGGING, 'django.request', LOGGER_CLIENT_LEVEL, [
+                       'console', 'logfile-request'])
 
 if LOGGING_SERVER:
     set_generic_handler(LOGGING, 'logfile-server', LOGGER_SERVER_LEVEL, LOGGER_FILE_SERVER, LOGGER_MAX_BYTES,
                         LOGGER_BACKUP_COUNT, 'logging.handlers.RotatingFileHandler')
-    set_generic_logger(LOGGING, 'django.server', LOGGER_SERVER_LEVEL, ['console', 'logfile-server'])
+    set_generic_logger(LOGGING, 'django.server', LOGGER_SERVER_LEVEL, [
+                       'console', 'logfile-server'])
 
 if LOGGING_DB:
     set_generic_handler(LOGGING, 'logfile-django-db-backend', LOGGER_DB_LEVEL, LOGGER_FILE_DB, LOGGER_MAX_BYTES,
                         LOGGER_BACKUP_COUNT, 'logging.handlers.RotatingFileHandler')
-    set_generic_logger(LOGGING, 'django.db.backends', LOGGER_DB_LEVEL, ['console', 'logfile-django-db-backend'])
+    set_generic_logger(LOGGING, 'django.db.backends', LOGGER_DB_LEVEL, [
+                       'console', 'logfile-django-db-backend'])
 
-MONGO_USER = "mgi_user"
-MONGO_PASSWORD = "mgi_password"
+MONGO_USER = "mdb_user"
+MONGO_PASSWORD = "mdb_pwd"
 DB_NAME = "mgi"
 DB_SERVER = "localhost"
-MONGODB_URI = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@" + DB_SERVER + "/" + DB_NAME
+MONGODB_URI = "mongodb://" + MONGO_USER + ":" + \
+    MONGO_PASSWORD + "@" + DB_SERVER + "/" + DB_NAME
 connect(DB_NAME, host=MONGODB_URI)
 
 # core_main_app settings
@@ -339,7 +345,8 @@ CUSTOM_SUBTITLE = "Part of the Materials Genome Initiative"
 CUSTOM_NAME = "Curator"
 
 
-DATA_SOURCES_EXPLORE_APPS = ['core_explore_federated_search_app', 'core_explore_oaipmh_app']
+DATA_SOURCES_EXPLORE_APPS = [
+    'core_explore_federated_search_app', 'core_explore_oaipmh_app']
 
 # FIXME: set desired value before release
 # Lists in data not stored if number of elements is over the limit (e.g. 100)
